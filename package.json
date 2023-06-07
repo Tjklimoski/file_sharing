@@ -1,11 +1,11 @@
 {
-  "tpye": "module",
+  "type": "module",
   "name": "wds_file_sharing",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "runDev": "nodemon server.js"
+    "devStart": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
