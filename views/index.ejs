@@ -36,10 +36,27 @@
       font-size: 700;
       font-size: 1.2rem;
     }
+
+    .upload-link-msg {
+      margin-bottom: 1rem;
+      grid-column: span 2;
+    }
+
+    a {
+      color: rgb(127, 192, 29);
+    }
   </style>
 </head>
 <body>
   <form action="/upload" method="post" enctype="multipart/form-data">
+    <% if (locals.fileLink !=null) { %>
+      <div class="upload-link-msg">
+        Your file is uploaded to:<br>
+        <a href="<%= locals.fileLink %>">
+          <%= locals.fileLink %>
+        </a>
+      </div>
+      <% } %>
     <label for="file">File:</label>
     <input type="file" id="file" name="file" required />
     <label for="password">Password:</label>
