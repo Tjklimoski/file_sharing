@@ -4,6 +4,7 @@ import multer from "multer";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import File from "./models/File.js";
+import querystring from "node:querystring";
 dotenv.config();
 
 const port = process.env.PORT || 3000;
@@ -15,7 +16,7 @@ mongoose.connect(process.env.DB_URL);
 app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.render("index", { fileLink: req.query?.fileLink });
 });
 
 app.post("/upload", upload.single("file"), async (req, res) => {
@@ -29,11 +30,19 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   }
 
   const file = await File.create(fileData);
-  res.render("index", { fileLink: `${req.headers.origin}/file/${file.id}` });
+  const query = querystring.stringify({
+    fileLink: `${req.headers.origin}/file/${file.id}`,
+  });
+  res.redirect("/?" + query);
 });
 
-app.get("/file/:id", (req, res) => {
-  const id = req.params.id;
+app.get("/file/:id", async (req, res) => {
+  const file = await File.findById(req.params.id);
+
+  file.downloadCount++;
+  await file.save();
+
+  res.download(file.path, file.originalName);
 });
 
 app.listen(port, (e) =>
