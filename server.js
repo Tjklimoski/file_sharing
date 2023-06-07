@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import File from "./models/model.js";
+import File from "./models/File.js";
 dotenv.config();
 
 const port = process.env.PORT || 3000;
